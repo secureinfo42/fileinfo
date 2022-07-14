@@ -267,7 +267,7 @@ json_end() {
 
 if [ "$1" = "-h" -o "$1" = "-?" -o $# -eq 0 ]; then
 	banner
-	echo "Usage: $APP [-j [-v]] <file> [file2 [file3]...]"
+	echo "Usage: $APP [-j [-v]] <item> [item2 [item3]...]"
 	echo 
 	echo " -j  : output is in JSON format"
 	echo " -v  : get more informations"
@@ -276,7 +276,8 @@ if [ "$1" = "-h" -o "$1" = "-?" -o $# -eq 0 ]; then
 	echo 
 	echo "Exemples:"
 	echo "$APP /bin/ls /bin/sh /etc/hosts"
-	echo "$APP -j ~/"
+	echo "$APP -j ~/ # Can be a folder"
+	echo "$APP -j -v /usr/bin/jq"
 	echo 
 	exit
 fi
