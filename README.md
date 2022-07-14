@@ -24,6 +24,8 @@ fileinfo /bin/ls /bin/sh /etc/hosts
 fileinfo -j ~/ # Can be a folder
 fileinfo -j -v /usr/bin/jq
 ```
+
+> PS : banner is sent to stderr :)
 	
 ## SHA256.BASE64 ?
 
