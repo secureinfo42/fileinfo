@@ -21,37 +21,37 @@ Verbose is slower because it computes ratio of NULL bytes and Strings.
 - flags
 - attributes
 - dates
-- human_format
-- birth
-- modified
-- last_access
-- status_changed
-- timestamp
-- birth
-- modified
-- last_access
-- status_changed
+	- human_format
+		- birth
+		- modified
+		- last_access
+		- status_changed
+	- timestamp
+		- birth
+		- modified
+		- last_access
+		- status_changed
 - digests
-- filenamemd5
-- filenamesha1
-- filenamesha256
-- datamd5
-- datasha1
-- datasha256
-- datasha512
-- datacrc32
-- datasha256.base64
-- datasha512.base64
+	- filename:md5
+	- filename:sha1
+	- filename:sha256
+	- data:md5
+	- data:sha1
+	- data:sha256
+	- data:sha512
+	- data:crc32
+	- data:sha256.base64
+	- data:sha512.base64
 - stats
-- strings
-- nullbytes
+	- strings
+	- nullbytes
 - metadata
-- darwin_version
-- darwin_bundle
-- darwin_content_type
-- darwin_filesystem_name
-- darwin_display_name
-- darwin_usecount
+	- darwin_version
+	- darwin_bundle
+	- darwin_content_type
+	- darwin_filesystem_name
+	- darwin_display_name
+	- darwin_usecount
 
 ## Basic format data
 
