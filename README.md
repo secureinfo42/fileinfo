@@ -120,6 +120,8 @@ ytkMT0HsvwwpoK1oylrwM17/yATB/iJr0rvHzfULv8mhmG8Y4ElgZkqlaExzPY5jFoM3neiAP/2jfoXM
 
 ## Basic format data
 
+Simply output of `stat` plus common digest.
+
 ```
   File: /bin/sh
   Size: 150384    	Blocks: 24         IO Block: 4096   regular file
@@ -156,7 +158,11 @@ For JSON format, you can use `jq` to make your output more pretty
 }
 ```
 
-With `jq` it looks like : 
+With `jq` :
+
+`fileinfo -j -v /bin/sh`
+
+It looks like : 
 
 ```json
 {
