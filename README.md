@@ -40,23 +40,32 @@ Exemple :
 ```
 /usr/bin/openssl dgst -sha512 -r /bin/ls|cut -d' ' -f1
 ```
-> cad90c4f41ecbf0c29a0ad68ca5af0335effc804c1fe226bd2bbc7cdf50bbfc9a1986f18e04960664aa5684c733d8e631683379de8803ffda37e85cc62dcfd07
 
 ```
+# Output
+cad90c4f41ecbf0c29a0ad68ca5af0335effc804c1fe226bd2bbc7cdf50bbfc9a1986f18e04960664aa5684c733d8e631683379de8803ffda37e85cc62dcfd07
+```
+
+```sh
 /usr/bin/openssl dgst -sha512 -r /bin/ls|cut -d' ' -f1|xxd -ps -r|xxd
 ```
 
-> 00000000: cad9 0c4f 41ec bf0c 29a0 ad68 ca5a f033  ...OA...)..h.Z.3
-> 00000010: 5eff c804 c1fe 226b d2bb c7cd f50b bfc9  ^....."k........
-> 00000020: a198 6f18 e049 6066 4aa5 684c 733d 8e63  ..o..I`fJ.hLs=.c
-> 00000030: 1683 379d e880 3ffd a37e 85cc 62dc fd07  ..7...?..~..b...
+```
+# Output
+00000000: cad9 0c4f 41ec bf0c 29a0 ad68 ca5a f033  ...OA...)..h.Z.3
+00000010: 5eff c804 c1fe 226b d2bb c7cd f50b bfc9  ^....."k........
+00000020: a198 6f18 e049 6066 4aa5 684c 733d 8e63  ..o..I`fJ.hLs=.c
+00000030: 1683 379d e880 3ffd a37e 85cc 62dc fd07  ..7...?..~..b...
+```
 
 ```
 /usr/bin/openssl dgst -sha512 -r /bin/ls|cut -d' ' -f1|xxd -ps -r|base64 -w0
 ```
 
-> ytkMT0HsvwwpoK1oylrwM17/yATB/iJr0rvHzfULv8mhmG8Y4ElgZkqlaExzPY5jFoM3neiAP/2jfoXMYtz9Bw==
-
+```
+# Output
+ytkMT0HsvwwpoK1oylrwM17/yATB/iJr0rvHzfULv8mhmG8Y4ElgZkqlaExzPY5jFoM3neiAP/2jfoXMYtz9Bw==
+```
 
 ## Which informations are gathered ?
 
