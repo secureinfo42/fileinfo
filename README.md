@@ -4,6 +4,38 @@ Simple bash script to get detailed informations about files.
 
 Verbose is slower because it computes ratio of NULL bytes and Strings.
 
+## Synopsis
+
+```sh
+░█▀▀░▀█▀░█░░░█▀▀░▀█▀░█▀█░█▀▀░█▀█
+░█▀▀░░█░░█░░░█▀▀░░█░░█░█░█▀▀░█░█
+░▀░░░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░▀░░░▀▀▀
+>>> fileinfo ===================
+
+Usage: fileinfo [-j [-v]] <item> [item2 [item3]...]
+
+ -j  : output is in JSON format
+ -v  : get more informations
+
+Without options do stat and common hash digests
+
+Exemples:
+fileinfo /bin/ls /bin/sh /etc/hosts
+fileinfo -j ~/ # Can be a folder
+fileinfo -j -v /usr/bin/jq
+```
+	
+## SHA256.BASE64 ?
+
+SHA256 and SHA512 have long output. To shorten this, some SIEM and tools use the base64 format of the hash. It can be found this way :
+
+`openssl dgst -sha512 /path/to/file | cut -d' ' -f1 | xxd -ps -r | base64`
+
+- `openssl dgst -sha512 /path/to/file` : get the SHA512
+- `cut -d' ' -f1` : output of `openssl` is `hash file`, separator is space  
+- `xxd -ps -r | base64` : unhex the output to make it raw, then encode in base64
+
+
 ## Which informations are gathered ?
 
 - files
