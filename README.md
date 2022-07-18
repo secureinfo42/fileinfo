@@ -4,8 +4,6 @@ Simple bash script to get detailed informations about files.
 
 Verbose is slower because it computes ratio of NULL bytes and Strings.
 
-Banner is sent to stderr, can be hidden by send to `2>/dev/null`
-
 ## Synopsis
 
 ```sh
