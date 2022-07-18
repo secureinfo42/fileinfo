@@ -10,6 +10,8 @@
 
 APP="$(basename "$0")"
 
+export LC_ALL=C 
+
 banner() {
 	(
 	echo
@@ -50,8 +52,17 @@ function calc_strings() {
 function calc_nullbytes() {
 	item="$1"
 	size="$2"
-	nbrc="$(hexdump -C "$item"|grep -o ' 00'|grep -c .)"
+	nbrc="$(hexdump -C -v "$item"|grep -o ' 00'|grep -c .)"
 	calc "(($nbrc/2)/$size)*100"|grep -o '^.....' || echo "0"
+}
+
+#=== Ratio of binary bytes ============================================================================================
+
+function calc_binarybytes() {
+	item="$1"
+	size="$2"
+	nbrc="$(hexdump -C -v "$item"|grep -Po '\s([01][0-9A-F])|\s(([89]|[A-F])[0-9A-F])'|wc -l)"
+	calc "($nbrc/$size)*100"|grep -o '^.....' || echo "0"
 }
 
 
@@ -127,6 +138,7 @@ function get_info {
 		  name_sha256="$(echo -n "$item"|openssl dgst -r -sha256|cut -d' ' -f1)"
 		  strings_stats="$(calc_strings "$item" $size)%%"
 		  strings_nullbytes="$(calc_nullbytes "$item" $size)%%"
+		  strings_binarybytes="$(calc_binarybytes "$item" $size)%%"
 		fi
 	fi
 
@@ -187,18 +199,21 @@ json_data() {
 	printf " \"flags\": \"$flags\","
 	printf " \"attributes\": \"$attributes\","
 	printf " \"dates\": {"
-	printf "  \"human_format\": {"
-	printf "   \"birth\": \"$date_birth\","
-	printf "   \"modified\": \"$date_modified\","
-	printf "   \"last_access\": \"$date_last_access\","
-	printf "   \"status_changed\": \"$date_status_changed\""
-	printf "  },"
 	printf "  \"timestamp\": {"
 	printf "   \"birth\": \"$timestamp_birth\","
 	printf "   \"modified\": \"$timestamp_modified\","
 	printf "   \"last_access\": \"$timestamp_last_access\","
 	printf "   \"status_changed\": \"$timestamp_status_changed\""
 	printf "  }"
+	if [ $verbose -eq 1 ]; then
+		printf ","
+		printf "  \"human_format\": {"
+		printf "   \"birth\": \"$date_birth\","
+		printf "   \"modified\": \"$date_modified\","
+		printf "   \"last_access\": \"$date_last_access\","
+		printf "   \"status_changed\": \"$date_status_changed\""
+		printf "  }"
+	fi
 	printf " },"
 	printf " \"digests\": {"
 
@@ -226,7 +241,8 @@ json_data() {
 		printf ","
 		printf " \"stats\": {"
 		printf "  \"strings\": \"$strings_stats\","
-		printf "  \"nullbytes\": \"$strings_nullbytes\""
+		printf "  \"nullbytes\": \"$strings_nullbytes\","
+		printf "  \"binarybytes\": \"$strings_binarybytes\""
 		printf " },"
 		printf " \"metadata\": {"
 		printf "  \"darwin_version\": \"$darwin_version\","
@@ -277,7 +293,7 @@ if [ "$1" = "-h" -o "$1" = "-?" -o $# -eq 0 ]; then
 	echo "Exemples:"
 	echo "$APP /bin/ls /bin/sh /etc/hosts"
 	echo "$APP -j ~/ # Can be a folder"
-	echo "$APP -j -v /usr/bin/jq"
+	echo "$APP -j -v /usr/bin/ncat|jq"
 	echo 
 	exit
 fi
@@ -319,7 +335,7 @@ if [ "$1" = "-j" ]; then
 		shift
 
 		found="false"
-		if [ -f "$item" ]; then
+		if [ -e "$item" ]; then
 			get_info "$item" $verbose
 			found="true"
 		fi
