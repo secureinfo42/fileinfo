@@ -22,7 +22,7 @@ lpHilojilpHilojiloDiloDilpHilojilpHilogK4paR4paA4paR4paR4paR4paA4paA4paA4paR
 4paA4paA4paA4paR4paA4paA4paA4paR4paA4paA4paA4paR4paA4paR4paA4paR4paA4paR4paR
 4paR4paA4paA4paACj4+PiBmaWxlaW5mbyA9PT09PT09PT09PT09PT09PT09'|base64 -d
 	printf "\033[0m\n\n"
-	) >&2
+	)
 }
 
 
@@ -313,7 +313,6 @@ fi
 #======================================================================================================================
 
 if [ "$1" != "-j" ]; then
-	banner
 	while true ; do
 		stat -- "$1"
 		if [ -f "$1" ]; then
@@ -333,7 +332,6 @@ fi
 #======================================================================================================================
 
 if [ "$1" = "-j" ]; then
-	banner
 	shift
 
 	verbose=""
