@@ -110,6 +110,7 @@ ytkMT0HsvwwpoK1oylrwM17/yATB/iJr0rvHzfULv8mhmG8Y4ElgZkqlaExzPY5jFoM3neiAP/2jfoXM
 - stats
 	- strings
 	- nullbytes
+	- binarybytes
 - metadata
 	- darwin_version
 	- darwin_bundle
@@ -143,7 +144,7 @@ For JSON format, you can use `jq` to make your output more pretty
 ```json
 {
   "files": [
-    { "filename": "/bin/sh", "found": "true", "type": "Mach-O universal binary with 2 architectures: [x86_64:012- Mach-O 64-bit x86_64 executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|PIE>] [arm64e (caps: 0x2):012- Mach-O 64-bit arm64e (caps: PAC00) executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|PIE>]", "user": "root", "group": "wheel", "uid": "0", "gid": "0", "permissions": "-rwxr-xr-x", "mode": "755", "size": "150384", "flags": "restricted,compressed", "attributes": "-", "dates": {  "human_format": {   "birth": "2022-05-09 23:30:48.000000000 +0200",   "modified": "2022-05-09 23:30:48.000000000 +0200",   "last_access": "2022-05-09 23:30:48.000000000 +0200",   "status_changed": "2022-05-09 23:30:48.000000000 +0200"  },  "timestamp": {   "birth": "1652131848",   "modified": "1652131848",   "last_access": "1652131848",   "status_changed": "1652131848"  } }, "digests": {  "data:md5": "aa6a7346afb5f4ee0ac618c4873f1cbb",  "data:sha1": "2bce3dae92fc48a6671c86af83206f4a99a2b9bf",  "data:sha256": "ff4917c0f8c86f4a85e2bef778691a70f3ea05a7ca9a6c2b121acd4b2e359d16",  "data:sha512": "db9733f30022707186edf3b58de0bae4f7eed6bf6365a5976b44a4efff61a5a403d00ee5176af9d0433d81b36ce317ce33df787feec607c7051ec0d6b722338c" }}
+    { "filename": "/bin/ls", "found": "true", "type": "Mach-O universal binary with 2 architectures: [x86_64:012- Mach-O 64-bit x86_64 executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|PIE>] [arm64e (caps: 0x2):012- Mach-O 64-bit arm64e (caps: PAC00) executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|PIE>]", "user": "root", "group": "wheel", "uid": "0", "gid": "0", "permissions": "-rwxr-xr-x", "mode": "755", "size": "187040", "flags": "restricted,compressed", "attributes": "-", "dates": {  "timestamp": {   "birth": "1652131848",   "modified": "1652131848",   "last_access": "1652131848",   "status_changed": "1652131848"  } }, "digests": {  "data:md5": "df209aaa50b2d78f835c2314a056c0e3",  "data:sha1": "c37527d61dcd997eaa157fea2a5cbe630da36886",  "data:sha256": "60690e628a4b6f8066644f157df7ba1674cebe12e0d480e1a16edf7371c05b2a",  "data:sha512": "cad90c4f41ecbf0c29a0ad68ca5af0335effc804c1fe226bd2bbc7cdf50bbfc9a1986f18e04960664aa5684c733d8e631683379de8803ffda37e85cc62dcfd07" }}
   ]
 }
 ```
@@ -153,14 +154,14 @@ For JSON format, you can use `jq` to make your output more pretty
 ```json
 {
   "files": [
-    { "filename": "/bin/sh", "basename_hex": "7368", "found": "true", "type": "Mach-O universal binary with 2 architectures: [x86_64:012- Mach-O 64-bit x86_64 executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|PIE>] [arm64e (caps: 0x2):012- Mach-O 64-bit arm64e (caps: PAC00) executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|PIE>]", "user": "root", "group": "wheel", "uid": "0", "gid": "0", "permissions": "-rwxr-xr-x", "mode": "755", "size": "150384", "flags": "restricted,compressed", "attributes": "-", "dates": {  "human_format": {   "birth": "2022-05-09 23:30:48.000000000 +0200",   "modified": "2022-05-09 23:30:48.000000000 +0200",   "last_access": "2022-05-09 23:30:48.000000000 +0200",   "status_changed": "2022-05-09 23:30:48.000000000 +0200"  },  "timestamp": {   "birth": "1652131848",   "modified": "1652131848",   "last_access": "1652131848",   "status_changed": "1652131848"  } }, "digests": {  "filename:md5": "5f54a6ad4e4e28b1cfea4c1160ba743d",  "filename:sha1": "db8502aaf162a542f38cc564ea14f0c98bfe1ed0",  "filename:sha256": "968849b35858c8eb6132f7567f9c8d18af4d995b3189226526e63d6c6fe3efb9",  "data:md5": "aa6a7346afb5f4ee0ac618c4873f1cbb",  "data:sha1": "2bce3dae92fc48a6671c86af83206f4a99a2b9bf",  "data:sha256": "ff4917c0f8c86f4a85e2bef778691a70f3ea05a7ca9a6c2b121acd4b2e359d16",  "data:sha512": "db9733f30022707186edf3b58de0bae4f7eed6bf6365a5976b44a4efff61a5a403d00ee5176af9d0433d81b36ce317ce33df787feec607c7051ec0d6b722338c",  "data:crc32": "562ead1a",  "data:sha256.base64": "/0kXwPjIb0qF4r73eGkacPPqBafKmmwrEhrNSy41nRY=",  "data:sha512.base64": "25cz8wAicHGG7fO1jeC65Pfu1r9jZaWXa0Sk7/9hpaQD0A7lF2r50EM9gbNs4xfOM994f+7GB8cFHsDWtyIzjA==" }, "stats": {  "strings": "0.150%",  "nullbytes": "1.275%" }, "metadata": {  "darwin_version": "N/A",  "darwin_bundle": "N/A",  "darwin_content_type": "public.unix-executable",  "darwin_filesystem_name": "sh",  "darwin_display_name": "sh",  "darwin_usecount": "N/A" }}
+    { "filename": "/bin/ls", "basename_hex": "6c73", "found": "true", "type": "Mach-O universal binary with 2 architectures: [x86_64:012- Mach-O 64-bit x86_64 executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|PIE>] [arm64e (caps: 0x2):012- Mach-O 64-bit arm64e (caps: PAC00) executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|PIE>]", "user": "root", "group": "wheel", "uid": "0", "gid": "0", "permissions": "-rwxr-xr-x", "mode": "755", "size": "187040", "flags": "restricted,compressed", "attributes": "-", "dates": {  "timestamp": {   "birth": "1652131848",   "modified": "1652131848",   "last_access": "1652131848",   "status_changed": "1652131848"  },  "human_format": {   "birth": "2022-05-09 23:30:48.000000000 +0200",   "modified": "2022-05-09 23:30:48.000000000 +0200",   "last_access": "2022-05-09 23:30:48.000000000 +0200",   "status_changed": "2022-05-09 23:30:48.000000000 +0200"  } }, "digests": {  "filename:md5": "bd8d3fd0015020776d90e99fd268a484",  "filename:sha1": "ff920c7eb75b89a7247edd27662bcb31f81711f5",  "filename:sha256": "89168c69ce0e7007fd98e017d9c946610e33bcf3446c6bd8d126ca3440777aa9",  "data:md5": "df209aaa50b2d78f835c2314a056c0e3",  "data:sha1": "c37527d61dcd997eaa157fea2a5cbe630da36886",  "data:sha256": "60690e628a4b6f8066644f157df7ba1674cebe12e0d480e1a16edf7371c05b2a",  "data:sha512": "cad90c4f41ecbf0c29a0ad68ca5af0335effc804c1fe226bd2bbc7cdf50bbfc9a1986f18e04960664aa5684c733d8e631683379de8803ffda37e85cc62dcfd07",  "data:crc32": "49823a8d",  "data:sha256.base64": "YGkOYopLb4BmZE8Vffe6FnTOvhLg1IDhoW7fc3HAWyo=",  "data:sha512.base64": "ytkMT0HsvwwpoK1oylrwM17/yATB/iJr0rvHzfULv8mhmG8Y4ElgZkqlaExzPY5jFoM3neiAP/2jfoXMYtz9Bw==" }, "stats": {  "strings": "0.631%",  "nullbytes": "37.15%",  "binarybytes": "80.24%" }, "metadata": {  "darwin_version": "N/A",  "darwin_bundle": "N/A",  "darwin_content_type": "public.unix-executable",  "darwin_filesystem_name": "ls",  "darwin_display_name": "ls",  "darwin_usecount": "N/A" }}
   ]
 }
 ```
 
 With `jq` :
 
-`fileinfo -j -v /bin/sh`
+`fileinfo -j -v /bin/sh | jq`
 
 It looks like : 
 
@@ -182,17 +183,17 @@ It looks like :
       "flags": "restricted,compressed",
       "attributes": "-",
       "dates": {
-        "human_format": {
-          "birth": "2022-05-09 23:30:48.000000000 +0200",
-          "modified": "2022-05-09 23:30:48.000000000 +0200",
-          "last_access": "2022-05-09 23:30:48.000000000 +0200",
-          "status_changed": "2022-05-09 23:30:48.000000000 +0200"
-        },
         "timestamp": {
           "birth": "1652131848",
           "modified": "1652131848",
           "last_access": "1652131848",
           "status_changed": "1652131848"
+        },
+        "human_format": {
+          "birth": "2022-05-09 23:30:48.000000000 +0200",
+          "modified": "2022-05-09 23:30:48.000000000 +0200",
+          "last_access": "2022-05-09 23:30:48.000000000 +0200",
+          "status_changed": "2022-05-09 23:30:48.000000000 +0200"
         }
       },
       "digests": {
@@ -209,7 +210,8 @@ It looks like :
       },
       "stats": {
         "strings": "0.150%",
-        "nullbytes": "1.275%"
+        "nullbytes": "45.66%",
+        "binarybytes": "93.13%"
       },
       "metadata": {
         "darwin_version": "N/A",
