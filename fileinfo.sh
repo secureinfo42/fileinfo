@@ -95,6 +95,14 @@ function get_dgst() {
 
 #=== Getinfo as generic as possible ===================================================================================
 
+function get_mime() {
+	if [ -f "$item" ]; then
+		mime=$(file -b -i -L "$item")
+	fi
+}
+
+#=== Getinfo as generic as possible ===================================================================================
+
 function get_info {
 
   item="$1"
@@ -102,6 +110,7 @@ function get_info {
 
   item_hex="$(basename "$item"|tr -d "\n"|xxd -ps|tr -d "\n")"
 	type=$(file -b -L "$item"|tr "\n" ","|sed -r 's/[\x01-\x1f]//g;s/\\//g;s/,$//1')
+	mime=$(file -b -i -L "$item")
 
   # Basic infos -------------------------------------------------------------------------------------------------------
 
@@ -189,6 +198,9 @@ json_data() {
 
 	printf " \"found\": \"$found\","
 	printf " \"type\": \"$type\","
+	if [ $verbose -eq 1 ]; then
+		printf " \"mime\": \"$mime\","
+	fi
 	printf " \"user\": \"$user\","
 	printf " \"group\": \"$group\","
 	printf " \"uid\": \"$uid\","
@@ -306,9 +318,11 @@ if [ "$1" != "-j" ]; then
 		stat -- "$1"
 		if [ -f "$1" ]; then
 			get_dgst "$1"
+			get_mime "$1"
 			printf   "   MD5: $md5"
 			printf "\n  SHA1: $sha1"
 			printf "\nSHA256: $sha256"
+			printf "\n  MIME: $mime"
 		fi
 		printf "\n\n"
 		shift
