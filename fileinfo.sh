@@ -1,6 +1,16 @@
 #!/bin/sh
 
 
+
+#######################################################################################################################
+#
+# TODO ?
+# - yaml format
+# - csv
+# - dependancies of executables
+#
+##
+
 #######################################################################################################################
 #
 # Globz
@@ -36,6 +46,7 @@ function usage() {
 	echo "     - size, filename, user, uid, group, gid, md5, sha1, sha256, sha512, mime, type"
 	echo " - yaml"
 	echo " - json"
+	echo " - stat : in this case fileinfo is just a wrapper to stat \$*"
 	echo
 	echo "-v : verbose"
 	echo
@@ -514,9 +525,15 @@ verbose="0"
 case "$1" in
 	"json") format="json" ;;
 	"yaml") format="yaml" ;;
+	"stat") format="stat" ;;
 	*)      format="$1"   ;;
 esac
 shift
+
+if [ "$format" = "stat" ]; then
+	stat $*
+	exit
+fi
 
 if [ "$1" = "-v" ]; then
 	verbose=1
