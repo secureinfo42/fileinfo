@@ -12,17 +12,36 @@ Verbose is slower because it computes ratio of NULL bytes and Strings.
 ░▀░░░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░▀░░░▀▀▀
 >>> fileinfo ===================
 
-Usage: fileinfo [-j [-v]] <item> [item2 [item3]...]
 
- -j  : output is in JSON format
- -v  : get more informations
+Usage: fileinfo <format> [-v] <item> [item2 [item3]...]
 
-Without options do stat and common hash digests
+format :
+ - stat format :
+   - see `man stat`
+   - aliases :
+     - size, filename, user, uid, group, gid, md5, sha1, sha256, sha512, mime, type
+ - yaml
+ - json
+ - stat : in this case fileinfo is just a wrapper to stat $*
+
+-v : verbose
+
+item : can be file, folder or link (will be dereferenced)
+
+'verbose' is uneffective on 'stat format'.
+'verbose' add these informations :
+ - type : full type via `file` command
+ - mime : via `file -i` command
+ - statistics :
+   - strings   [\x20-\x7f]
+   - binary    [\x00-\x19\x80-\xFF]
+   - nullbytes [\x00]
+ - metadata : if OS is Darwin-like else values are empty
 
 Exemples:
-fileinfo /bin/ls /bin/sh /etc/hosts
-fileinfo -j ~/ # Can be a folder
-fileinfo -j -v /usr/bin/jq
+fileinfo filename,user,group,sha1 -- /bin/ls /bin/sh /etc/hosts
+fileinfo yaml ~/
+fileinfo json -v /usr/bin/nc /usr/bin/finger|jq
 ```
 
 > PS : banner is sent to stderr :)
@@ -120,9 +139,9 @@ ytkMT0HsvwwpoK1oylrwM17/yATB/iJr0rvHzfULv8mhmG8Y4ElgZkqlaExzPY5jFoM3neiAP/2jfoXM
 	- darwin_display_name
 	- darwin_usecount
 
-## Basic format data
+## Stat format data
 
-Simply output of `stat` plus common digest.
+Simply output of `stat` :
 
 ```
   File: /bin/sh
@@ -140,6 +159,18 @@ SHA256: ff4917c0f8c86f4a85e2bef778691a70f3ea05a7ca9a6c2b121acd4b2e359d16
 ```
 
 For JSON format, you can use `jq` to make your output more pretty
+
+## Stat format data
+
+```
+fileinfo filename,user,group,sha1 /bin/ls
+```
+
+Will output :
+
+```
+/bin/ls,root,wheel,c37527d61dcd997eaa157fea2a5cbe630da36886
+```
 
 ## JSON format data
 
@@ -163,7 +194,7 @@ For JSON format, you can use `jq` to make your output more pretty
 
 With `jq` :
 
-`fileinfo -j -v /bin/sh | jq`
+`fileinfo json -v /bin/sh | jq`
 
 It looks like : 
 
@@ -229,5 +260,64 @@ It looks like :
 }
 ```
 
+## YAML detailed format data
 
+The command :
 
+```
+fileinfo yaml -v /etc/hosts|yq
+```
+
+Its output :
+
+```yaml
+files:
+  - "/etc/hosts":
+    filename: "/etc/hosts"
+    basename_hex: "686f737473"
+    found: "true"
+    type: "ASCII text"
+    mime: "text/plain; charset=us-ascii"
+    user: "root"
+    group: "wheel"
+    uid: 0
+    gid: 0
+    permissions: "-rw-r--r--"
+    mode: "644"
+    size: 4214
+    flags: ""
+    attributes: "-"
+    dates:
+      timestamp:
+        - birth: 1653993512
+        - modified: 1657900326
+        - last_access: 1658122803
+        - status_changed: 1657900326
+      human_format:
+        - birth: "2022-05-31 12:38:32.860456899 +0200"
+        - modified: "2022-07-15 17:52:06.705576655 +0200"
+        - last_access: "2022-07-18 07:40:03.109079974 +0200"
+        - status_changed: "2022-07-15 17:52:06.705576655 +0200"
+    digests:
+      filename:md5: "6143255678c5cffb124081bad763f0d3"
+      filename:sha1: "16712bca228a5d71c1ff53e977773d78b2aa4a6d"
+      filename:sha256: "11d0a8418293d1f6d0985af45c6edd5b94307ac6248d1dfefb67b1282644d253"
+      data:md5: "170cc4cfed769ebca07a1a2196dc9e58"
+      data:sha1: "35f4933bb649e86c1eae26cc433ec59f9ce8182a"
+      data:sha256: "798a811c1767821d962c245fb074f7ea65625738b70f3b2a086489d204c105bf"
+      data:sha512: "00cd5c43f97e623ca453af4d6f19eb2918f400d6eab45837e92fed2369169ed43f274637568c135f56d0b2bee406495856c1ed842e6d448d3dad5cac6dc8e01c"
+      data:crc32: "cb043742"
+      data:sha256.base64: "eYqBHBdngh2WLCRfsHT36mViVzi3DzsqCGSJ0gTBBb8="
+      data:sha512.base64: "AM1cQ/l+YjykU69NbxnrKRj0ANbqtFg36S/tI2kWntQ/J0Y3VowTX1bQsr7kBklYVsHthC5tRI09rVysbcjgHA=="
+    stats:
+      - strings: "97.84"
+      - nullbytes: "0"
+      - binarybytes: "2.159"
+    metadata:
+      - darwin_version: "N/A"
+      - darwin_bundle: "N/A"
+      - darwin_content_type: "public.data"
+      - darwin_filesystem_name: "hosts"
+      - darwin_display_name: "hosts"
+      - darwin_usecount: "N/A"
+```
